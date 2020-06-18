@@ -101,8 +101,8 @@ func sendRequest(dest string) {
 			resp.Body.Close()
 			fmt.Println("---------Sucessful uploaded photo, waiting for processing---------")
 			fmt.Println(resp.StatusCode)
-			//fmt.Println(resp.Header)
-			//fmt.Println(body)
+			fmt.Println(resp.Header)
+			fmt.Println(body)
 		}
 	}
 }
@@ -112,9 +112,9 @@ func offload() {
 	// Get file list in photo folder
 	getFile()
 	go sendRequest(gateway)
-	// for i := 1; i <= 1; i++ {
-	// 	time.Sleep(1000 * time.Millisecond)
-	// 	go sendRequest("http://127.0.0.1:8888/upload")
+	//for i := 1; i <= 1; i++ {
+	//	Time.Sleep(1000 * Time.Millisecond)
+	//	go sendRequest(gateway)
 	// }
 }
 
@@ -132,7 +132,7 @@ func receiveResult(w http.ResponseWriter, r *http.Request) {
 	var imageresult []ImageResult
 	imageresult = result.Data
 	//for l := range result {
-	//fmt.Printf("Total time = %v", result.TotalTime)
+	//	fmt.Printf("Total time = %v", result.TotalTime)
 	for _, r := range imageresult {
 		fmt.Printf(" ++ Image have %v face(s), completed in %v", r.TotalFaces, r.Time)
 	}
