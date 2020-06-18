@@ -25,7 +25,7 @@ type Result struct {
 }
 
 // Gateway API server
-var gateway = "http://127.0.0.1:8888/upload"
+var gateway = "http://127.0.0.1:8080/function/faas-pigo"
 
 // ImageResult to parse result for each image
 type ImageResult struct {
