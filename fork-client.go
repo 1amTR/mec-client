@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 // File list
@@ -35,6 +36,8 @@ type ImageResult struct {
 	Time       string
 }
 
+var start = time.Now()
+
 // Creates a new file upload http request with optional extra params
 func newfileUploadRequest(uri string, params map[string]string, paramName, path string) (*http.Request, error) {
 	file, err := os.Open(path)
@@ -42,7 +45,9 @@ func newfileUploadRequest(uri string, params map[string]string, paramName, path 
 		return nil, err
 	}
 	defer file.Close()
+	log.Println(float64(time.Since(start))/float64(time.Millisecond), "ms")
 
+	start = time.Now()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -68,7 +73,6 @@ func newfileUploadRequest(uri string, params map[string]string, paramName, path 
 	return req, err
 }
 
-
 // Get file path
 func getFile() {
 	path, _ := os.Getwd()
@@ -93,8 +97,10 @@ func sendRequest(dest string) {
 			log.Fatal(err)
 		}
 		client := &http.Client{}
-		// Do request
 		resp, err := client.Do(request)
+		log.Println(float64(time.Since(start))/float64(time.Millisecond), "ms")
+
+		start = time.Now()
 		if err != nil {
 			log.Fatal(err)
 		} else {
@@ -104,11 +110,14 @@ func sendRequest(dest string) {
 				log.Fatal(err)
 			}
 			resp.Body.Close()
+			
 			fmt.Println("---------Sucessful uploaded photo, waiting for processing---------")
 			fmt.Println(resp.StatusCode)
 			fmt.Println(resp.Header)
 
 			fmt.Println(body)
+			log.Println(float64(time.Since(start))/float64(time.Millisecond), "ms")
+			fmt.Println("\n")
 		}
 	}
 }
